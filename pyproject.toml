@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "space_cowboy"
+version = "0.0.1"
+description = "A 2D top down space shooter game made with Python"
+authors = ["Giovanni Armane <giovanniarmane@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "3.7"
+
+[tool.poetry.dev-dependencies]
