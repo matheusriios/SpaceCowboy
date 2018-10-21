@@ -2,42 +2,33 @@ __all__ = (
     'main',
 )
 
-try:
-    import os
-    import sys
-    import pygame
-    from typing import (
-        Tuple,
-    )
-    from pygame.locals import (
-        MOUSEBUTTONDOWN,
-        QUIT,
-        RLEACCEL,
-    )
-    from pygame.mixer import (
-        Sound,
-    )
-    from pygame.surface import (
-        Surface,
-    )
-    from pygame.rect import (
-        Rect,
-    )
-except ImportError:
-    print(f"couldn't load module: {ImportError}")
-    sys.exit(2)
 
-
-# Constants
-VERSION = "0.0.1"
-GAME_PATH = os.path.dirname(os.path.abspath(__file__))
-ASSETS_PATH = os.path.join(GAME_PATH, 'assets')
-ASSETS_SOUNDS_PATH = os.path.join(ASSETS_PATH, 'sounds')
-ASSETS_SPRITES_PATH = os.path.join(ASSETS_PATH, 'sprites')
-
-
-# Types
-Colorkey = Tuple[int, int, int]
+import os
+import pygame
+from pygame.locals import (
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_UP,
+    KEYDOWN,
+    MOUSEBUTTONDOWN,
+    QUIT,
+    RLEACCEL,
+)
+from pygame.mixer import (
+    Sound,
+)
+from pygame.surface import (
+    Surface,
+)
+from consts import (
+    ASSETS_SOUNDS_PATH,
+    ASSETS_SPRITES_PATH,
+)
+from typedefs import (
+    Colorkey,
+    Event
+)
 
 
 def load_image(path: str) -> Surface:
@@ -46,20 +37,20 @@ def load_image(path: str) -> Surface:
     return pygame.image.load(file_path)
 
 
-def load_image_surface(path: str, colorkey: Colorkey = None) -> Tuple[Surface, Rect]:
+def load_image_surface(path: str, colorkey: Colorkey = None) -> Surface:
 
     image = load_image(path).convert()
     if colorkey is not None:
         if colorkey is -1:
             colorkey = image.get_at((0, 0))
         image.set_colorkey(colorkey, RLEACCEL)
-    return image, image.get_rect()
+    return image
 
 
-def load_image_surface_alpha(path: str) -> Tuple[Surface, Rect]:
+def load_image_surface_alpha(path: str) -> Surface:
 
     image = load_image(path).convert_alpha()
-    return image, image.get_rect()
+    return image
 
 
 def load_sound(path: str) -> Sound:
@@ -89,30 +80,42 @@ def main() -> None:
     textpos.centerx = background.get_rect().centerx
     background.blit(text, textpos)
 
-    test_image = load_image(os.path.join('tests', 'test1.png'))
+    test_image1 = load_image_surface_alpha(os.path.join('tests', 'test1.png'))
+    test_image2 = load_image_surface_alpha(os.path.join('tests', 'test2.png'))
+    test_image2_rect = test_image2.get_rect()
     test_sound_ogg = load_sound(os.path.join('tests', 'test1.ogg'))
     test_sound_wav = load_sound(os.path.join('tests', 'test1.wav'))
 
     screen.blit(background, (0, 0))
-    screen.blit(test_image, (0, 0))
+    screen.blit(test_image2, (0, 10))
+    screen.blit(test_image1, (0, 0))
     pygame.display.flip()
 
     while True:
-        event: pygame.event.EventType
+        event: Event
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
-            if event.type == MOUSEBUTTONDOWN:
+            elif event.type == MOUSEBUTTONDOWN:
                 button = event.button
                 if button == 1:
                     test_sound_ogg.play()
                 elif button == 3:
                     test_sound_wav.play()
-                else:
-                    pass
+            elif event.type == KEYDOWN:
+                key = event.key
+                if key == K_DOWN:
+                    test_image2_rect = test_image2_rect.move(0, 10)
+                elif key == K_LEFT:
+                    test_image2_rect = test_image2_rect.move(-10, 0)
+                elif key == K_RIGHT:
+                    test_image2_rect = test_image2_rect.move(10, 0)
+                elif key == K_UP:
+                    test_image2_rect = test_image2_rect.move(0, -10)
 
         screen.blit(background, (0, 0))
-        screen.blit(test_image, pygame.mouse.get_pos())
+        screen.blit(test_image2, test_image2_rect)
+        screen.blit(test_image1, pygame.mouse.get_pos())
         pygame.display.flip()
 
 
