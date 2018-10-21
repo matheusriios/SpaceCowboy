@@ -1,6 +1,7 @@
 __all__ = (
     'Colorkey',
     'Event',
+    'ScreenSize',
 )
 
 
@@ -14,3 +15,4 @@ from pygame.event import (
 
 Colorkey = Tuple[int, int, int]
 Event = EventType
+ScreenSize = Tuple[int, int]
