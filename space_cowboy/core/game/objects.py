@@ -9,14 +9,14 @@ from pygame.surface import Surface
 
 class Asteroid(Sprite):
 
-    def __init__(self, position: Vector2, direction: Vector2, speed: int, image: Surface):
+    def __init__(self, position: Iterable, direction: Iterable, speed: float, image: Surface):
 
         super().__init__()
-        self.__direction = direction
+        self.__direction = Vector2(direction)
+        self.speed = speed
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = position.x, position.y
-        self.speed = speed
+        self.rect.x, self.rect.y = position
 
 
     @property
@@ -28,8 +28,7 @@ class Asteroid(Sprite):
     @direction.setter
     def direction(self, value: Iterable) -> None:
 
-        dir_x, dir_y = value
-        self.direction = Vector2(dir_x, dir_y).normalize_ip()
+        self.direction = Vector2(value).normalize_ip()
 
 
     @property
