@@ -88,7 +88,8 @@ def quit_pygame():
 
 def init_pygame():
 
-    # TODO:  Negative values for Linux PulseAudio. Verify if Windows support negative values.
+    # TODO Negative values for Linux PulseAudio. Verify if Windows support negative values.
+    # TODO If there is another application using PulseAudio, the program can't start.  
     pygame.mixer.pre_init(44100, -16, 2, 1024*4)
     pygame.init()
 
