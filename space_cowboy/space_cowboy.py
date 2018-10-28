@@ -1,6 +1,4 @@
-__all__ = (
-    'main',
-)
+__all__ = ('main',)
 
 
 import os
@@ -23,6 +21,9 @@ from consts import (
     ASSETS_BACKGROUNDS_PATH,
     ASSETS_SOUNDS_PATH,
     ASSETS_SPRITES_PATH,
+    SCREEN_DEPTH,
+    SCREEN_FULLSCREEN,
+    SCREEN_SIZE,
 )
 from typedefs import (
     Colorkey,
@@ -61,7 +62,7 @@ class GameController:
 
         self.__state = 'running'
         self.__background = smoothscale(load_image_surface(os.path.join(ASSETS_BACKGROUNDS_PATH, 'stars_blue.png')),
-                                        (1024, 768))
+                                        SCREEN_SIZE)
         self.__sprites_list = Group()
 
         for i in range(0, 10):
@@ -152,7 +153,7 @@ def main() -> None:
 
     init_pygame()
 
-    screen = init_screen("Space Cowboy", (1024, 768), 32, True, True)
+    screen = init_screen("Space Cowboy", SCREEN_SIZE, SCREEN_DEPTH, SCREEN_FULLSCREEN, True)
     clock = Clock()
 
     game_controller = GameController(screen)
