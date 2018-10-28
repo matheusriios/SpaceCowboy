@@ -1,18 +1,16 @@
 __all__ = (
     'Colorkey',
-    'Event',
     'ScreenSize',
+    'Vector2',
 )
 
 
 from typing import (
+    Iterable,
     Tuple,
-)
-from pygame.event import (
-    EventType,
 )
 
 
 Colorkey = Tuple[int, int, int]
-Event = EventType
 ScreenSize = Tuple[int, int]
+Vector2 = Iterable[int]

@@ -5,51 +5,97 @@ __all__ = (
 
 import os
 import pygame
+from pygame.event import Event
 from pygame.locals import (
-    K_a,
-    K_d,
-    K_s,
-    K_w,
-    K_DOWN,
-    K_ESCAPE,
-    K_LEFT,
-    K_RIGHT,
-    K_UP,
-    KEYDOWN,
     MOUSEBUTTONDOWN,
-    QUIT,
     RLEACCEL,
+    QUIT,
 )
-from pygame.mixer import (
-    Sound,
+from pygame.mixer import Sound
+from pygame.sprite import (
+    Group,
+    Sprite,
 )
-from pygame.surface import (
-    Surface,
-)
+from pygame.surface import Surface
+from pygame.time import Clock
+from pygame.transform import smoothscale
 from consts import (
+    ASSETS_BACKGROUNDS_PATH,
     ASSETS_SOUNDS_PATH,
     ASSETS_SPRITES_PATH,
 )
 from typedefs import (
     Colorkey,
-    Event,
     ScreenSize,
+    Vector2,
 )
 
 
-class GameObject:
+class Asteroid(Sprite):
 
-    def __init__(self, image, position, speed):
+    def __init__(self, position: Vector2, direction: Vector2, speed: float, image: Surface):
 
-        self.image = image
-        self.position = image.get_rect().move(*position)
+        super().__init__()
+        self.direction = direction
         self.speed = speed
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = position
 
-    def move(self, direction):
 
-        vec_x, vec_y = direction
-        self.position = self.position.move(vec_x * self.speed, vec_y * self.speed)
+    def update(self):
 
+        position = self.position[0] + self.direction[0] * self.speed, self.position[1] + self.direction[1] * self.speed
+        self.rect.x, self.rect.y = position
+
+
+    @property
+    def position(self) -> Vector2:
+
+        return self.rect.x, self.rect.y
+
+
+class GameController:
+
+    def __init__(self, display: Surface):
+
+        self.__state = 'running'
+        self.__background = smoothscale(load_image_surface(os.path.join(ASSETS_BACKGROUNDS_PATH, 'stars_blue.png')),
+                                        (1024, 768))
+        self.__sprites_list = Group()
+
+        for i in range(0, 10):
+            position = ((i + 1) * 80, 0)
+            direction = (0, 1)
+            speed = 2
+            path = os.path.join(ASSETS_SPRITES_PATH, 'asteroids', 'meteor_brown_big1.png')
+            img = load_image_surface_alpha(path)
+            asteroid = Asteroid(position, direction, speed, img)
+            self.__sprites_list.add(asteroid)
+
+        display.blit(self.__background, (0, 0))
+
+
+    def process_events(self) -> bool:
+
+        event: Event
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                return True
+
+        return False
+
+
+    def process_updates(self):
+
+        self.__sprites_list.update()
+
+
+    def display_frame(self, display: Surface):
+
+        self.__sprites_list.clear(display, self.__background)
+        self.__sprites_list.draw(display)
+        pygame.display.flip()
 
 
 def load_image(path: str) -> Surface:
@@ -107,67 +153,19 @@ def main() -> None:
     init_pygame()
 
     screen = init_screen("Space Cowboy", (1024, 768), 32, True, True)
+    clock = Clock()
 
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((250, 250, 250))
-
-    font = pygame.font.Font(None, 36)
-    text = font.render("Hello, world!", 1, (10, 10, 10))
-    textpos = text.get_rect()
-    textpos.centerx = background.get_rect().centerx
-    background.blit(text, textpos)
-
-
-    ship_img = load_image_surface_alpha(os.path.join('tests', 'test1.png'))
-    asteroid_img = load_image_surface_alpha(os.path.join('tests', 'test2.png'))
-
-    ship = GameObject(ship_img, (100, 100), 10)
-    asteroid = GameObject(asteroid_img, (0, 0), 5)
-
-    objects = [ship, asteroid]
-
-    test_sound_ogg = load_sound(os.path.join('tests', 'test1.ogg'))
-    test_sound_wav = load_sound(os.path.join('tests', 'test1.wav'))
-
-    screen.blit(background, (0, 0))
-    pygame.display.flip()
+    game_controller = GameController(screen)
 
     while True:
-        event: Event
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                return quit_pygame()
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                return quit_pygame()
-            if event.type == MOUSEBUTTONDOWN:
-                button = event.button
-                if button == 1:
-                    test_sound_ogg.play()
-                elif button == 3:
-                    test_sound_wav.play()
-            elif event.type == KEYDOWN:
-                if event.key == K_a:
-                    asteroid.move((-1, 0))
-                elif event.key == K_d:
-                    asteroid.move((1, 0))
-                elif event.key == K_s:
-                    asteroid.move((0, 1))
-                elif event.key == K_w:
-                    asteroid.move((0, -1))
-                elif event.key == K_DOWN:
-                    ship.move((0, 1))
-                elif event.key == K_LEFT:
-                    ship.move((-1, 0))
-                elif event.key == K_RIGHT:
-                    ship.move((1, 0))
-                elif event.key == K_UP:
-                    ship.move((0, -1))
 
-        screen.blit(background, (0, 0))
-        for obj in objects:
-            screen.blit(obj.image, obj.position)
-        pygame.display.flip()
+        done = game_controller.process_events()
+        if done:
+            quit_pygame()
+
+        game_controller.process_updates()
+        game_controller.display_frame(screen)
+        clock.tick(60)
 
 
 if __name__ == '__main__':
