@@ -1,7 +1,6 @@
 __all__ = (
-    'Colorkey',
+    'ColorKey',
     'ScreenSize',
-    'Vector2',
 )
 
 
@@ -11,6 +10,5 @@ from typing import (
 )
 
 
-Colorkey = Tuple[int, int, int]
+ColorKey = Tuple[int, int, int]
 ScreenSize = Tuple[int, int]
-Vector2 = Iterable[int]
