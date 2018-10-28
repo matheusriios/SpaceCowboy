@@ -1,14 +1,17 @@
 __all__ = ('start',)
 
 
-from pygame.locals import QUIT
+from pygame.event import get as get_events
 from pygame.surface import Surface
+from .consts import ASSETS_IMAGES_PATH
 from .engine.handlers.initialization import (
     init_clock,
     init_pygame,
     init_screen,
     quit_pygame,
 )
+from .engine.loaders import ImagesLoader
+from .game.controllers import GameController
 
 
 def _configure_screen(configs: dict) -> Surface:
@@ -26,11 +29,17 @@ def start(configs: dict):
     screen = _configure_screen(configs)
     clock = init_clock()
 
-    from pygame.event import get as get_events
+    images_loader = ImagesLoader(ASSETS_IMAGES_PATH)
+    game_controller = GameController(screen, images_loader)
+
+
     while True:
 
         events = get_events()
-        for event in events:
-            if event.type == QUIT:
-                quit_pygame()
-            clock.tick(60)
+        done = game_controller.process_events(events)
+        if done:
+            quit_pygame()
+
+        game_controller.process_updates()
+        game_controller.render_frame()
+        clock.tick(60)
