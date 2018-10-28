@@ -1,10 +1,4 @@
-__all__ = (
-    'resources',
-    'initialization',
-)
+__all__ = ('initialization',)
 
 
-from . import (
-    resources,
-    initialization,
-)
+from . import initialization

@@ -1,11 +1,11 @@
-__all__ = ('SoundsHandler',)
+__all__ = ('SoundsLoader',)
 
 
 import os
 from pygame.mixer import Sound
 
 
-class SoundsHandler:
+class SoundsLoader:
 
     def __init__(self, assets_path: str):
 

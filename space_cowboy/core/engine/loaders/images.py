@@ -1,14 +1,14 @@
-__all__ = ('SurfacesHandler',)
+__all__ = ('ImagesLoader',)
 
 
 import os
 from pygame.image import load
 from pygame.locals import RLEACCEL
 from pygame.surface import Surface
-from ...typedefs import ColorKey
+from ..typedefs import ColorKey
 
 
-class SurfacesHandler:
+class ImagesLoader:
 
     def __init__(self, assets_path: str):
 
