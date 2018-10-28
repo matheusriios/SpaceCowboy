@@ -34,28 +34,3 @@ def start(configs: dict):
             if event.type == QUIT:
                 quit_pygame()
             clock.tick(60)
-
-
-
-
-
-
-# def main() -> None:
-
-#     init_pygame()
-
-#     screen = init_screen("Space Cowboy", SCREEN_SIZE, SCREEN_DEPTH, SCREEN_FULLSCREEN, True)
-#     clock = Clock()
-
-#     game_controller = GameController(screen)
-
-#     while True:
-
-#         done = game_controller.process_events()
-#         if done:
-#             quit_pygame()
-
-#         game_controller.process_updates()
-#         game_controller.display_frame(screen)
-#         pygame.display.flip()
-#         clock.tick(60)
