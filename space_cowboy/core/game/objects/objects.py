@@ -19,7 +19,7 @@ class Asteroid(Sprite):
         self.speed = speed
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = position
+        self.rect.center = position
 
 
     @property
@@ -31,7 +31,7 @@ class Asteroid(Sprite):
     @direction.setter
     def direction(self, value: Iterable) -> None:
 
-        self.direction = Vector2(value).normalize_ip()
+        self.__direction = Vector2(value)
 
 
     @property
@@ -42,9 +42,8 @@ class Asteroid(Sprite):
 
     def update(self) -> None:
 
-        vec: Vector2 = self.direction * self.speed
-        self.rect.x += vec.x
-        self.rect.y += vec.y
+        vec = self.direction * self.speed
+        self.rect.move_ip(vec)
 
 
 class Ship(Sprite):
@@ -56,7 +55,7 @@ class Ship(Sprite):
         self.speed = speed
         self.image = image
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = position
+        self.rect.center = position
 
 
     @property
@@ -68,17 +67,16 @@ class Ship(Sprite):
     @direction.setter
     def direction(self, value: Iterable) -> None:
 
-        self.direction = Vector2(value).normalize_ip()
+        self.__direction = Vector2(value)
 
 
     @property
     def position(self) -> Vector2:
 
-        return Vector2(self.rect.x, self.rect.y)
+        return Vector2(self.rect.center)
 
 
     def update(self):
 
-        vec: Vector2 = self.direction * self.speed
-        self.rect.x += vec.x
-        self.rect.y += vec.y
+        vec = self.direction * self.speed
+        self.rect.move_ip(vec)

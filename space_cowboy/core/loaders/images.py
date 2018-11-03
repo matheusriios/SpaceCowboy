@@ -5,7 +5,11 @@ import os
 from pygame.image import load
 from pygame.locals import RLEACCEL
 from pygame.surface import Surface
-from ..typedefs import ColorKey
+from pygame.transform import smoothscale
+from ..typedefs import (
+    ColorKey,
+    ScreenSize,
+)
 
 
 class ImagesLoader:
@@ -15,23 +19,28 @@ class ImagesLoader:
         self.assets_path = assets_path
 
 
-    def load_image(self, file_path: str) -> Surface:
+    def __load(self, file_path: str) -> Surface:
 
         return load(os.path.join(self.assets_path, file_path))
 
 
-    def load_image_surface(self, file_path: str, color_key: ColorKey = None) -> Surface:
+    def load_surface(self, file_path: str, color_key: ColorKey = None) -> Surface:
 
-        image = self.load_image(file_path).convert()
+        image = self.__load(file_path).convert()
         if color_key is not None:
             image = self.set_colorkey(image, color_key)
         return image
 
 
-    def load_image_surface_alpha(self, file_path: str) -> Surface:
+    def load_surface_alpha(self, file_path: str) -> Surface:
 
-        image = self.load_image(file_path).convert_alpha()
+        image = self.__load(file_path).convert_alpha()
         return image
+
+
+    def smoothscale(self, image: Surface, target_resolution: ScreenSize) -> Surface:
+
+        return smoothscale(image, target_resolution)
 
 
     def set_colorkey(self, image: Surface, color_key: ColorKey) -> Surface:
