@@ -6,7 +6,7 @@ from pygame.event import Event
 from pygame.locals import QUIT
 from pygame.sprite import Group
 from pygame.surface import Surface
-from ..engine.loaders import ImagesLoader
+from .loaders import ImagesLoader
 
 
 class GameController:

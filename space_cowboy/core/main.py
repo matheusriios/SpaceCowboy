@@ -4,14 +4,14 @@ __all__ = ('start',)
 from pygame.event import get as get_events
 from pygame.surface import Surface
 from .consts import ASSETS_IMAGES_PATH
-from .engine.handlers.initialization import (
+from .handlers.initialization import (
     init_clock,
     init_pygame,
     init_screen,
     quit_pygame,
 )
-from .engine.loaders import ImagesLoader
-from .game.controllers import GameController
+from .loaders import ImagesLoader
+from .controllers import GameController
 
 
 def _configure_screen(configs: dict) -> Surface:
