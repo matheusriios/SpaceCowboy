@@ -33,7 +33,6 @@ def start(configs: dict):
     images_loader = ImagesLoader(ASSETS_IMAGES_PATH)
     game_controller = GameController(screen, images_loader)
 
-
     while True:
 
         events = get_events()
