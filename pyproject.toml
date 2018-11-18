@@ -12,3 +12,4 @@ pygame = "^1.9"
 [tool.poetry.dev-dependencies]
 pylint = "^2.1"
 astroid = "^2.0"
+autopep8 = "^1.4"
