@@ -97,29 +97,40 @@ class EventSystem:
         except TypeError:
             self.__channels[event_types] = dict()
 
-    def subscribe(self, subscriber: Any, callback: Callable[[EventType], Any], event_type: int = None):
+    def subscribe(self, subscriber: Any, callback: Callable[[EventType], Any],
+                  event_types: Union[int, Iterable[int]] = None):
         """
         Subscribe to a channel, informing a callback to be executed when the event is detected in the queue.
 
         :param subscriber: object that is subscribing.
         :param callback: callback function to be executed when an event of event_type is detected in the queue.
-        :param event_type: event type to subscribe to. If None, subscribes to every event channel.
+        :param event_types: event type or list of types to subscribe to. If None, subscribes to every channel.
         """
-        if event_type:
-            self.__channels[event_type][subscriber] = callback
+        if event_types:
+            try:
+                for type_ in event_types:
+                    self.__channels[type_][subscriber] = callback
+            except TypeError:
+                type_ = event_types
+                self.__channels[type_][subscriber] = callback
         else:
             for chn in self.__channels:
                 self.subscribe(subscriber, callback, chn)
 
-    def unsubscribe(self, subscriber: Any, event_type: int = None):
+    def unsubscribe(self, subscriber: Any, event_types: Union[int, Iterable[int]] = None):
         """
         Unsubscribe from a given event channel or every channel.
 
         :param subscriber: object that is unsubscribing.
-        :param event_type: event type to unsubscribe to. If None, unsubscribes from every event channel.
+        :param event_types: event type or list of types to unsubscribe to. If None, unsubscribes from every channel.
         """
-        if event_type:
-            del self.__channels[event_type][subscriber]
+        if event_types:
+            try:
+                for type_ in event_types:
+                    del self.__channels[type_][subscriber]
+            except TypeError:
+                type_ = event_types
+                del self.__channels[type_][subscriber]
         else:
             for chn in self.__channels:
                 self.unsubscribe(subscriber, chn)
