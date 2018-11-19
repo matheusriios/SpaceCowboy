@@ -1,82 +1,23 @@
 __all__ = (
-    'Asteroid',
-    'Ship',
+    'PlayerShip',
 )
 
 
-from typing import Iterable
 from pygame.math import Vector2
-from pygame.sprite import Sprite
-from pygame.surface import Surface
 
 
-class Asteroid(Sprite):
+class PlayerShip:
 
-    def __init__(self, position: Iterable, direction: Iterable, speed: float, image: Surface):
+    def __init__(self, input_component):
 
         super().__init__()
-        self.__direction = Vector2(direction)
-        self.speed = speed
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.center = position
-
-
-    @property
-    def direction(self) -> Vector2:
-
-        return self.__direction
-
-
-    @direction.setter
-    def direction(self, value: Iterable) -> None:
-
-        self.__direction = Vector2(value)
-
-
-    @property
-    def position(self) -> Vector2:
-
-        return Vector2(self.rect.x, self.rect.y)
-
-
-    def update(self) -> None:
-
-        vec = self.direction * self.speed
-        self.rect.move_ip(vec)
-
-
-class Ship(Sprite):
-
-    def __init__(self, position: Iterable, direction: Iterable, speed: float, image: Surface):
-
-        super().__init__()
-        self.__direction = Vector2(direction)
-        self.speed = speed
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.center = position
-
-
-    @property
-    def direction(self) -> Vector2:
-
-        return self.__direction
-
-
-    @direction.setter
-    def direction(self, value: Iterable) -> None:
-
-        self.__direction = Vector2(value)
-
-
-    @property
-    def position(self) -> Vector2:
-
-        return Vector2(self.rect.center)
-
+        self.__input_component = input_component
+        self.direction = Vector2(0, 0)
 
     def update(self):
 
-        vec = self.direction * self.speed
-        self.rect.move_ip(vec)
+        self.__input_component.update(self)
+
+    def move(self, direction: Vector2):
+
+        self.direction = direction

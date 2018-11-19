@@ -1,18 +1,17 @@
 __all__ = ('start',)
 
 
-from pygame.display import flip
-from pygame.event import get as get_events
+from pygame.locals import QUIT
 from pygame.surface import Surface
-from .consts import ASSETS_IMAGES_PATH
+
+from .game.controllers import GameController
 from .handlers.initialization import (
     init_clock,
     init_pygame,
     init_screen,
-    quit_pygame,
+    quit_pygame
 )
-from .loaders import ImagesLoader
-from .game.controllers import GameController
+from .systems import EventSystem
 
 
 def _configure_screen(configs: dict) -> Surface:
@@ -30,17 +29,13 @@ def start(configs: dict):
     screen = _configure_screen(configs)
     clock = init_clock()
 
-    images_loader = ImagesLoader(ASSETS_IMAGES_PATH)
-    game_controller = GameController(screen, images_loader)
+    event_system = EventSystem()
+    event_system.subscribe(__name__, lambda event: quit_pygame(), QUIT)
+
+    game_controller = GameController(event_system)
 
     while True:
 
-        events = get_events()
-        done = game_controller.process_events(events)
-        if done:
-            quit_pygame()
-
-        game_controller.process_updates()
-        game_controller.render_frame()
-        flip()
+        game_controller.process_events()
+        game_controller.update()
         clock.tick(60)
