@@ -1,3 +1,0 @@
-from .controllers import (
-    GameController,
-)

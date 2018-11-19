@@ -20,11 +20,11 @@ from pygame.sprite import (
     groupcollide,
 )
 from pygame.surface import Surface
-from ..objects import (
+from .objects import (
     Asteroid,
     Ship,
 )
-from ...loaders import ImagesLoader
+from ..loaders.images import ImagesLoader
 
 
 class GameController:
@@ -35,7 +35,8 @@ class GameController:
         self.__images_loader = images_loader
 
         self.__background = self.__images_loader.smoothscale(
-            self.__images_loader.load_surface(os.path.join('backgrounds', 'stars_blue.png')),
+            self.__images_loader.load_surface(
+                os.path.join('backgrounds', 'stars_blue.png')),
             self.__display.get_size()
         )
         self.__display.blit(self.__background, (0, 0))
@@ -44,29 +45,15 @@ class GameController:
             self.__display.get_rect().center,
             (0, 0),
             10,
-            self.__images_loader.load_surface_alpha(os.path.join('ships', 'ship1_red.png'))
+            self.__images_loader.load_surface_alpha(
+                os.path.join('ships', 'ship1_red.png'))
         )
 
-        asteroids = []
-        for _ in range(10):
-            pos = (random.randint(0, self.__display.get_width()), random.randint(0, self.__display.get_height()))
-            asteroid = Asteroid(
-                pos,
-                (0, 0),
-                0,
-                self.__images_loader.load_surface_alpha(os.path.join('asteroids', 'meteor_brown_med1.png'))
-            )
-            asteroids.append(asteroid)
-
         self.__sprites_list = Group()
-        self.__sprites_list.add(self.__player, *asteroids)
+        self.__sprites_list.add(self.__player)
 
         self.__player_group = GroupSingle()
         self.__player_group.add(self.__player)
-
-        self.__asteroids_group = Group()
-        self.__asteroids_group.add(*asteroids)
-
 
     def process_events(self, events: Iterable[Event]):
 
@@ -96,11 +83,9 @@ class GameController:
 
         return False
 
-
     def process_updates(self):
 
         self.__sprites_list.update()
-        groupcollide(self.__player_group, self.__asteroids_group, False, True)
 
 
     def render_frame(self):
