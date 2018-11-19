@@ -1,3 +1,8 @@
+"""
+This module provides classes and functions to interface with the PyGame Event Queue.
+"""
+
+
 __all__ = (
     'EventSystem',
 )
@@ -39,8 +44,8 @@ from pygame.locals import (
 
 class EventSystem:
     """
-        EventSystem is a class that wraps the PyGame Event Queue and provides services
-        such as an observer/observable pattern for better management of events using channels.
+    EventSystem is a class that wraps the PyGame Event Queue and provides services
+    such as an observer/observable pattern for better management of events using channels.
     """
 
     _event_types = (ACTIVEEVENT, JOYAXISMOTION, JOYBALLMOTION, JOYBUTTONDOWN, JOYBUTTONUP, JOYHATMOTION, KEYDOWN,
