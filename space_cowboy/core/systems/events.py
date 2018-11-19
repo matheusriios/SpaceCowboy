@@ -19,7 +19,6 @@ from pygame.event import (
     EventType,
     get,
     post,
-    pump,
     set_allowed,
     set_blocked,
 )
@@ -130,7 +129,6 @@ class EventSystem:
         Utility function to run every tick. Iterates through events list and execute registered callbacks for each
         event channel.
         """
-        pump()
         events: Iterator[EventType] = get()
         for event in events:
             for callback in self.__channels[event.type].values():
