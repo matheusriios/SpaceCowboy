@@ -21,14 +21,16 @@ from ...systems.events import EventSystem
 
 class PlayerInputComponent:
 
+    # TODO destructor should unsubscribe from event system.
+
     def __init__(self, event_system: EventSystem):
 
         event_system.subscribe(self, self.event_dispatcher, (KEYDOWN, KEYUP))
-        self.__direction_vec = Vector2(0, 0)
+        self.direction = Vector2(0, 0)
 
     def update(self, entity):
 
-        entity.move(self.__direction_vec)
+        entity.direction = self.direction
 
     def event_dispatcher(self, event: EventType):
 
@@ -39,21 +41,21 @@ class PlayerInputComponent:
 
         if event.key == K_DOWN:
             if event.type == KEYDOWN:
-                self.__direction_vec.y += 1
+                self.direction.y += 1
             elif event.type == KEYUP:
-                self.__direction_vec.y -= 1
+                self.direction.y -= 1
         elif event.key == K_LEFT:
             if event.type == KEYDOWN:
-                self.__direction_vec.x -= 1
+                self.direction.x -= 1
             elif event.type == KEYUP:
-                self.__direction_vec.x += 1
+                self.direction.x += 1
         elif event.key == K_RIGHT:
             if event.type == KEYDOWN:
-                self.__direction_vec.x += 1
+                self.direction.x += 1
             elif event.type == KEYUP:
-                self.__direction_vec.x -= 1
+                self.direction.x -= 1
         elif event.key == K_UP:
             if event.type == KEYDOWN:
-                self.__direction_vec.y -= 1
+                self.direction.y -= 1
             elif event.type == KEYUP:
-                self.__direction_vec.y += 1
+                self.direction.y += 1
