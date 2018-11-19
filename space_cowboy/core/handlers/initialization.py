@@ -8,6 +8,7 @@ __all__ = (
 import pygame
 from pygame.surface import Surface
 from pygame.time import Clock
+
 from ..typedefs import ScreenSize
 
 
@@ -19,7 +20,7 @@ def init_clock() -> Clock:
 def init_pygame():
 
     # TODO Negative values for Linux PulseAudio. Verify if Windows support negative values.
-    # FIXME If there is another application using PulseAudio, the program can't start.  
+    # FIXME If there is another application using PulseAudio, the program can't start.
     pygame.mixer.pre_init(44100, -16, 2, 1024*4)
     pygame.init()
 
