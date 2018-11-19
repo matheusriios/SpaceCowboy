@@ -5,6 +5,8 @@ __all__ = (
 )
 
 
+import sys
+
 import pygame
 from pygame.surface import Surface
 from pygame.time import Clock
@@ -36,3 +38,4 @@ def init_screen(caption: str, size: ScreenSize, depth: int, is_fullscreen: bool,
 def quit_pygame():
 
     pygame.quit()
+    sys.exit()
