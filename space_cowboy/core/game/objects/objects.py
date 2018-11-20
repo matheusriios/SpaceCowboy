@@ -8,21 +8,30 @@ from pygame.sprite import Sprite
 from pygame.surface import Surface
 
 from ..components.input import PlayerInputComponent
+from ..components.sprite import SpriteComponent
 
 
 class PlayerShip(Sprite):
 
-    def __init__(self, position: Vector2, direction: Vector2, velocity: int, image: Surface,
+    def __init__(self, direction: Vector2, velocity: int, sprite_component: SpriteComponent,
                  input_component: PlayerInputComponent):
 
         super().__init__()
         self.__input_component = input_component
         self.__input_component.direction = direction
         self.__direction = direction
+        self.__sprite_component = sprite_component
         self.velocity = velocity
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.center = position
+
+    @property
+    def image(self):
+
+        return self.__sprite_component.image
+
+    @property
+    def rect(self):
+
+        return self.__sprite_component.rect
 
     @property
     def direction(self) -> Vector2:
@@ -34,12 +43,7 @@ class PlayerShip(Sprite):
 
         self.__direction = value
 
-    @property
-    def position(self) -> Vector2:
-
-        return Vector2(self.rect.center)
-
     def update(self):
 
         self.__input_component.update(self)
-        self.rect.center += self.__direction * self.velocity
+        self.__sprite_component.position += self.direction * self.velocity

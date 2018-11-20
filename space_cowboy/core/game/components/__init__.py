@@ -1,6 +1,10 @@
 __all__ = (
-    'input_'
+    'input_',
+    'sprite',
 )
 
 
-from . import input as input_
+from . import (
+    input as input_,
+    sprite,
+)
