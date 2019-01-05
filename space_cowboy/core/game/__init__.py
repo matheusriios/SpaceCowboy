@@ -5,6 +5,7 @@ __all__ = (
 
 
 from . import (
+    components,
     controllers,
     objects,
 )

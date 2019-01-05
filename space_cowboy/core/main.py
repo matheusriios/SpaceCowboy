@@ -6,7 +6,7 @@ from pygame.locals import QUIT
 from pygame.surface import Surface
 
 from .consts import ASSETS_IMAGES_PATH
-from .game.controllers import GameController
+from .game.controllers import GameTestController001
 from .handlers.initialization import (
     init_clock,
     init_pygame,
@@ -37,7 +37,7 @@ def start(configs: dict):
 
     images_loader = ImagesLoader(ASSETS_IMAGES_PATH)
 
-    game_controller = GameController(screen, event_system, images_loader)
+    game_controller = GameTestController001(screen, event_system, images_loader)
 
     while True:
 
