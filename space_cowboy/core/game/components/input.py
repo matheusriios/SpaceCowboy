@@ -1,9 +1,10 @@
-__all__ = (
-    'PlayerInputComponent'
+__all__ = ('KeyboardInputComponent',)
+
+
+from typing import (
+    Callable,
+    Dict,
 )
-
-
-from typing import Any
 
 from pygame.event import EventType
 from pygame.locals import (
@@ -14,48 +15,51 @@ from pygame.locals import (
     KEYDOWN,
     KEYUP,
 )
-from pygame.math import Vector2
 
 from ...systems.events import EventSystem
 
 
-class PlayerInputComponent:
+Action = Callable[[dict], None]
+ActionType = Dict[int, Action]
+KeyAction = Dict[int, ActionType]
 
-    # TODO destructor should unsubscribe from event system.
 
-    def __init__(self, event_system: EventSystem):
+class KeyboardInputComponent:
 
-        event_system.subscribe(self, self.event_dispatcher, (KEYDOWN, KEYUP))
-        self.direction = Vector2(0, 0)
+    def __init__(self, event_system: EventSystem, key_action_map: KeyAction = {}):
 
-    def update(self, entity):
+        self.__event_system = event_system
+        self.__key_action_map = key_action_map
+        event_system.subscribe(self, self.__event_dispatcher, (KEYDOWN, KEYUP))
 
-        entity.direction = self.direction
+    @property
+    def key_action_map(self) -> KeyAction:
 
-    def event_dispatcher(self, event: EventType):
+        return self.__key_action_map
 
-        if event.key in (K_DOWN, K_LEFT, K_RIGHT, K_UP):
-            self.process_movement(event)
+    def __event_dispatcher(self, event: EventType):
 
-    def process_movement(self, event: EventType):
+        key = event.key
+        if key in self.__key_action_map:
+            process = self.__key_action_map.get(key).get(event.type)
+            if process:
+                process(event)
 
-        if event.key == K_DOWN:
-            if event.type == KEYDOWN:
-                self.direction.y += 1
-            elif event.type == KEYUP:
-                self.direction.y -= 1
-        elif event.key == K_LEFT:
-            if event.type == KEYDOWN:
-                self.direction.x -= 1
-            elif event.type == KEYUP:
-                self.direction.x += 1
-        elif event.key == K_RIGHT:
-            if event.type == KEYDOWN:
-                self.direction.x += 1
-            elif event.type == KEYUP:
-                self.direction.x -= 1
-        elif event.key == K_UP:
-            if event.type == KEYDOWN:
-                self.direction.y -= 1
-            elif event.type == KEYUP:
-                self.direction.y += 1
+    def clear_keys(self) -> 'KeyboardInputComponent':
+
+        self.__key_action_map = {}
+        return self
+
+    def update_keys(self, key_action_map: KeyAction) -> 'KeyboardInputComponent':
+
+        self.__key_action_map.update(key_action_map)
+        return self
+
+    def destroy(self):
+
+        print('lol')
+        self.__event_system.unsubscribe(self)
+
+    def update(self, *args):
+
+        pass

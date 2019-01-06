@@ -1,47 +1,87 @@
 __all__ = ('PlayerShip',)
 
 
+from pygame.event import EventType
+from pygame.locals import (
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_UP,
+    KEYDOWN,
+    KEYUP,
+)
 from pygame.math import Vector2
 from pygame.sprite import Sprite
-from pygame.surface import Surface
 
-from ..components.input import PlayerInputComponent
+from ..components.input import KeyboardInputComponent
 from ..components.sprite import SpriteComponent
 
 
 class PlayerShip(Sprite):
 
     def __init__(self, direction: Vector2, velocity: int, sprite_component: SpriteComponent,
-                 input_component: PlayerInputComponent):
+                 input_component: KeyboardInputComponent):
 
         super().__init__()
-        self.__input_component = input_component
-        self.__input_component.direction = direction
+
         self.__direction = direction
-        self.__sprite_component = sprite_component
-        self.velocity = velocity
+        self.__velocity = velocity
+
+        self.__components = {
+            'input_component': self.__init_input_component(input_component),
+            'sprite_component': sprite_component
+        }
 
     @property
     def image(self):
 
-        return self.__sprite_component.image
+        return self.__components['sprite_component'].image
 
     @property
     def rect(self):
 
-        return self.__sprite_component.rect
+        return self.__components['sprite_component'].rect
 
-    @property
-    def direction(self) -> Vector2:
+    def __init_input_component(self, component: KeyboardInputComponent):
 
-        return self.__direction
+        mapping = {
+            key: {action: self.__move
+                  for action in (KEYDOWN, KEYUP)}
+            for key in (K_DOWN, K_LEFT, K_RIGHT, K_UP)
+        }
+        return component.update_keys(mapping)
 
-    @direction.setter
-    def direction(self, value: Vector2):
+    def __move(self, event):
 
-        self.__direction = value
+        if event.key == K_DOWN:
+            if event.type == KEYDOWN:
+                self.__direction.y += 1
+            elif event.type == KEYUP:
+                self.__direction.y -= 1
+        elif event.key == K_LEFT:
+            if event.type == KEYDOWN:
+                self.__direction.x -= 1
+            elif event.type == KEYUP:
+                self.__direction.x += 1
+        elif event.key == K_RIGHT:
+            if event.type == KEYDOWN:
+                self.__direction.x += 1
+            elif event.type == KEYUP:
+                self.__direction.x -= 1
+        elif event.key == K_UP:
+            if event.type == KEYDOWN:
+                self.__direction.y -= 1
+            elif event.type == KEYUP:
+                self.__direction.y += 1
 
-    def update(self):
+    def destroy(self):
 
-        self.__input_component.update(self)
-        self.__sprite_component.position += self.direction * self.velocity
+        for component in self.__components.values():
+            component.destroy()
+            del component
+
+    def update(self, *args):
+
+        self.__components['sprite_component'].position += self.__direction * self.__velocity
+        for component in self.__components.values():
+            component.update()

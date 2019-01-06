@@ -11,7 +11,6 @@ from pygame.surface import Surface
 
 from ...loaders.images import ImagesLoader
 from ...systems.events import EventSystem
-from ..components.input import PlayerInputComponent
 from ..entities.utils import build_player_ship
 
 
@@ -29,9 +28,8 @@ class GameTestController001:
             self.__display.get_size())
         self.__display.blit(self.__background, (0, 0))
 
-        player_input = PlayerInputComponent(self.__event_system)
         self.__player = build_player_ship(
-            self.__display.get_rect().midbottom, (0, 0), 10, self.__images_loader, player_input)
+            self.__display.get_rect().center, (0, 0), 10, self.__event_system, self.__images_loader)
 
         self.__player_group = GroupSingle(self.__player)
         self.__sprites_group = Group(self.__player)

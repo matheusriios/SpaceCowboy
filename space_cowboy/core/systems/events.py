@@ -52,7 +52,7 @@ class EventSystem:
 
     def __init__(self):
 
-        self.__channels = {event: dict() for event in self._event_types}
+        self.__channels = {event: {} for event in self._event_types}
 
     @staticmethod
     def post_event(events: Union[EventType, Iterable[EventType]]):
