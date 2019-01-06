@@ -17,21 +17,19 @@ from pygame.surface import Surface
 
 from ..components.input import KeyboardInputComponent
 from ..components.sprite import SpriteComponent
+from ..components.transform import TransformComponent
 
 
 class PlayerShip(Sprite):
 
-    def __init__(self, direction: Vector2, velocity: int, sprite_component: SpriteComponent,
-                 input_component: KeyboardInputComponent):
+    def __init__(self, input_component: KeyboardInputComponent, sprite_component: SpriteComponent,
+                 transform_component: TransformComponent):
 
         super().__init__()
-
-        self.__direction = direction
-        self.__velocity = velocity
-
         self.__components = {
             'input_component': self.__init_input_component(input_component),
-            'sprite_component': sprite_component
+            'sprite_component': sprite_component,
+            'transform_component': transform_component
         }
 
     @property
@@ -66,26 +64,27 @@ class PlayerShip(Sprite):
 
     def __change_direction(self, event: EventType):
 
+        direction = self.__components['transform_component']
         if event.key == K_DOWN:
             if event.type == KEYDOWN:
-                self.__direction.y += 1
+                direction.y += 1
             elif event.type == KEYUP:
-                self.__direction.y -= 1
+                direction.y -= 1
         elif event.key == K_LEFT:
             if event.type == KEYDOWN:
-                self.__direction.x -= 1
+                direction.x -= 1
             elif event.type == KEYUP:
-                self.__direction.x += 1
+                direction.x += 1
         elif event.key == K_RIGHT:
             if event.type == KEYDOWN:
-                self.__direction.x += 1
+                direction.x += 1
             elif event.type == KEYUP:
-                self.__direction.x -= 1
+                direction.x -= 1
         elif event.key == K_UP:
             if event.type == KEYDOWN:
-                self.__direction.y -= 1
+                direction.y -= 1
             elif event.type == KEYUP:
-                self.__direction.y += 1
+                direction.y += 1
 
     def destroy(self):
 
@@ -95,6 +94,6 @@ class PlayerShip(Sprite):
 
     def update(self, *args):
 
-        self.position += self.__direction * self.__velocity
+        self.position += self.__components['transform_component'].velocity
         for component in self.__components.values():
             component.update()
