@@ -9,7 +9,7 @@ from pygame.math import Vector2
 from ...systems.events import EventSystem
 from ...loaders.images import ImagesLoader
 from ..components.input import KeyboardInputComponent
-from ..components.sprite import SpriteComponent
+from ..components.model import ModelComponent
 from ..components.transform import TransformComponent
 from .ships import PlayerShip
 
@@ -24,7 +24,7 @@ def build_player_ship(position: Iterable, direction: Iterable, speed: int, event
     # Build sprite component
     image = images_loader.load_surface_alpha(
         os.path.join('ships', 'ship1_red.png'))
-    sc = SpriteComponent(Vector2(position), image)
+    mc = ModelComponent(Vector2(position), image)
 
     # Build transform component
     try:
@@ -33,4 +33,4 @@ def build_player_ship(position: Iterable, direction: Iterable, speed: int, event
         dir_vec = Vector2(0, 0)
     tc = TransformComponent(dir_vec, speed)
 
-    return PlayerShip(ic, sc, tc)
+    return PlayerShip(ic, mc, tc)

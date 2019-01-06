@@ -1,12 +1,12 @@
 __all__ = (
     'input_',
-    'sprite',
+    'model',
     'transform',
 )
 
 
 from . import (
     input as input_,
-    sprite,
+    model,
     transform,
 )

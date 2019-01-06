@@ -1,11 +1,11 @@
-__all__ = ('SpriteComponent')
+__all__ = ('ModelComponent')
 
 
 from pygame.math import Vector2
 from pygame.surface import Surface
 
 
-class SpriteComponent:
+class ModelComponent:
 
     def __init__(self, position: Vector2, image: Surface):
 

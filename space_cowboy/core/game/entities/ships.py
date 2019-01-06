@@ -16,41 +16,41 @@ from pygame.sprite import Sprite
 from pygame.surface import Surface
 
 from ..components.input import KeyboardInputComponent
-from ..components.sprite import SpriteComponent
+from ..components.model import ModelComponent
 from ..components.transform import TransformComponent
 
 
 class PlayerShip(Sprite):
 
-    def __init__(self, input_component: KeyboardInputComponent, sprite_component: SpriteComponent,
+    def __init__(self, input_component: KeyboardInputComponent, model_component: ModelComponent,
                  transform_component: TransformComponent):
 
         super().__init__()
         self.__components = {
             'input_component': self.__init_input_component(input_component),
-            'sprite_component': sprite_component,
+            'model_component': model_component,
             'transform_component': transform_component
         }
 
     @property
     def image(self) -> Surface:
 
-        return self.__components['sprite_component'].image
+        return self.__components['model_component'].image
 
     @property
     def position(self):
 
-        return self.__components['sprite_component'].position
+        return self.__components['model_component'].position
 
     @position.setter
     def position(self, value: Vector2):
 
-        self.__components['sprite_component'].position = value
+        self.__components['model_component'].position = value
 
     @property
     def rect(self) -> Rect:
 
-        return self.__components['sprite_component'].rect
+        return self.__components['model_component'].rect
 
 
     def __init_input_component(self, component: KeyboardInputComponent) -> KeyboardInputComponent:
