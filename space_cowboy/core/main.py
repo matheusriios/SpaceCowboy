@@ -21,8 +21,8 @@ def _configure_screen(configs: dict) -> Surface:
 
     title = f"{configs['title']} - Version {configs['version']}"
     screen_conf = configs['screen']
-    screen = init_screen(title, screen_conf['size'], screen_conf['depth'], screen_conf['is_fullscreen'],
-                         screen_conf['is_mouse_visible'])
+    screen = init_screen(title, screen_conf['size'], screen_conf['depth'],
+                         screen_conf['is_fullscreen'], screen_conf['is_mouse_visible'])
     return screen
 
 
