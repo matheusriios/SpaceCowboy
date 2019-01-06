@@ -15,7 +15,7 @@ class SpriteComponent(Sprite):
         self.rect.center = position
 
     @property
-    def position(self):
+    def position(self) -> Vector2:
 
         return Vector2(self.rect.center)
 
@@ -23,3 +23,11 @@ class SpriteComponent(Sprite):
     def position(self, value: Vector2):
 
         self.rect.center = value
+
+    def destroy(self):
+
+        pass
+
+    def update(self, *args):
+
+        pass
