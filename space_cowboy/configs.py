@@ -9,5 +9,5 @@ CONFIG = {
         'size': (800, 600),
     },
     'title': "Space Cowboy",
-    'version': "0.0.1"
+    'version': "0.0.5"
 }
