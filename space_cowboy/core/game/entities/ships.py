@@ -37,16 +37,6 @@ class PlayerShip(Sprite):
         return self.__components['model_component'].image
 
     @property
-    def position(self):
-
-        return self.__components['model_component'].position
-
-    @position.setter
-    def position(self, value: Vector2):
-
-        self.__components['model_component'].position = value
-
-    @property
     def rect(self) -> Rect:
 
         return self.__components['model_component'].rect
@@ -93,6 +83,6 @@ class PlayerShip(Sprite):
 
     def update(self, *args):
 
-        self.position += self.__components['transform_component'].velocity
+        self.__components['model_component'].position += self.__components['transform_component'].velocity
         for component in self.__components.values():
             component.update()
