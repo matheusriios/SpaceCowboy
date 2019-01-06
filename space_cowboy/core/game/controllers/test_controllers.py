@@ -39,6 +39,8 @@ class GameTestController001:
     def update(self):
 
         self.__sprites_group.update()
+        self.__player_group.sprite.rect.clamp_ip(
+            self.__display.get_rect())
 
     def render_frame(self):
 

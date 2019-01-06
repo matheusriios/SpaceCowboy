@@ -11,7 +11,9 @@ from pygame.locals import (
     KEYUP,
 )
 from pygame.math import Vector2
+from pygame.rect import Rect
 from pygame.sprite import Sprite
+from pygame.surface import Surface
 
 from ..components.input import KeyboardInputComponent
 from ..components.sprite import SpriteComponent
@@ -33,25 +35,36 @@ class PlayerShip(Sprite):
         }
 
     @property
-    def image(self):
+    def image(self) -> Surface:
 
         return self.__components['sprite_component'].image
 
     @property
-    def rect(self):
+    def position(self):
+
+        return self.__components['sprite_component'].position
+
+    @position.setter
+    def position(self, value: Vector2):
+
+        self.__components['sprite_component'].position = value
+
+    @property
+    def rect(self) -> Rect:
 
         return self.__components['sprite_component'].rect
 
-    def __init_input_component(self, component: KeyboardInputComponent):
+
+    def __init_input_component(self, component: KeyboardInputComponent) -> KeyboardInputComponent:
 
         mapping = {
-            key: {action: self.__move
+            key: {action: self.__change_direction
                   for action in (KEYDOWN, KEYUP)}
             for key in (K_DOWN, K_LEFT, K_RIGHT, K_UP)
         }
         return component.update_keys(mapping)
 
-    def __move(self, event):
+    def __change_direction(self, event: EventType):
 
         if event.key == K_DOWN:
             if event.type == KEYDOWN:
@@ -82,6 +95,6 @@ class PlayerShip(Sprite):
 
     def update(self, *args):
 
-        self.__components['sprite_component'].position += self.__direction * self.__velocity
+        self.position += self.__direction * self.__velocity
         for component in self.__components.values():
             component.update()
