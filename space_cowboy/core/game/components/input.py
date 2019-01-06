@@ -57,7 +57,6 @@ class KeyboardInputComponent:
 
     def destroy(self):
 
-        print('lol')
         self.__event_system.unsubscribe(self)
 
     def update(self, *args):
