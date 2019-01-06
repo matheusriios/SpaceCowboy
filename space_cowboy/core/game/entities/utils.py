@@ -11,7 +11,21 @@ from ...loaders.images import ImagesLoader
 from ..components.input import KeyboardInputComponent
 from ..components.model import ModelComponent
 from ..components.transform import TransformComponent
+from .asteroids import Asteroid
 from .ships import PlayerShip
+
+
+def build_asteroid(position: Vector2, direction: Vector2, speed: int, images_loader: ImagesLoader) -> Asteroid:
+
+    # Build model component
+    image = images_loader.load_surface_alpha(
+        os.path.join('asteroids', 'meteor_brown_med1.png'))
+    mc = ModelComponent(position, image)
+
+    # Build transform component
+    tc = TransformComponent(direction, speed)
+
+    return Asteroid(mc, tc)
 
 
 def build_player_ship(position: Iterable, direction: Iterable, speed: int, event_system: EventSystem,
