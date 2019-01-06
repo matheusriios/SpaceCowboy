@@ -22,14 +22,13 @@ from ..components.transform import TransformComponent
 
 class PlayerShip(Sprite):
 
-    def __init__(self, input_component: KeyboardInputComponent, model_component: ModelComponent,
-                 transform_component: TransformComponent):
+    def __init__(self, ic: KeyboardInputComponent, mc: ModelComponent, tc: TransformComponent):
 
         super().__init__()
         self.__components = {
-            'input_component': self.__init_input_component(input_component),
-            'model_component': model_component,
-            'transform_component': transform_component
+            'input_component': self.__init_input_component(ic),
+            'model_component': mc,
+            'transform_component': tc
         }
 
     @property
