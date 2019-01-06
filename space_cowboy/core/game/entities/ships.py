@@ -1,6 +1,4 @@
-__all__ = (
-    'PlayerShip',
-)
+__all__ = ('PlayerShip',)
 
 
 from pygame.math import Vector2

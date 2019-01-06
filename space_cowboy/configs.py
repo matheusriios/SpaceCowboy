@@ -6,7 +6,7 @@ CONFIG = {
         'depth': 32,
         'is_fullscreen': True,
         'is_mouse_visible': False,
-        'size': (1024, 768),
+        'size': (800, 600),
     },
     'title': "Space Cowboy",
     'version': "0.0.1"

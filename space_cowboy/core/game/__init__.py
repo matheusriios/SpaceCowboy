@@ -1,11 +1,12 @@
 __all__ = (
+    'components',
     'controllers',
-    'objects',
+    'entities',
 )
 
 
 from . import (
     components,
     controllers,
-    objects,
+    entities,
 )

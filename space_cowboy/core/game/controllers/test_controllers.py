@@ -12,7 +12,7 @@ from pygame.surface import Surface
 from ...loaders.images import ImagesLoader
 from ...systems.events import EventSystem
 from ..components.input import PlayerInputComponent
-from ..objects.builders import build_player_ship
+from ..entities.utils import build_player_ship
 
 
 class GameTestController001:

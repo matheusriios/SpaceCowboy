@@ -1,6 +1,4 @@
-__all__ = (
-    'build_player_ship',
-)
+__all__ = ('build_player_ship',)
 
 
 import os
@@ -11,7 +9,7 @@ from pygame.math import Vector2
 from ...loaders.images import ImagesLoader
 from ..components.input import PlayerInputComponent
 from ..components.sprite import SpriteComponent
-from .objects import PlayerShip
+from .ships import PlayerShip
 
 
 def build_player_ship(position: Iterable, direction: Iterable, velocity: int, images_loader: ImagesLoader,
