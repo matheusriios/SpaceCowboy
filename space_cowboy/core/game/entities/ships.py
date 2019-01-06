@@ -83,6 +83,9 @@ class PlayerShip(Sprite):
 
     def update(self, *args):
 
-        self.__components['model_component'].position += self.__components['transform_component'].velocity
         for component in self.__components.values():
             component.update()
+
+        mc = self.__components['model_component']
+        tc = self.__components['transform_component']
+        mc.position += tc.velocity
