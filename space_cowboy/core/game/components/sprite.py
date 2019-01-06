@@ -2,11 +2,10 @@ __all__ = ('SpriteComponent')
 
 
 from pygame.math import Vector2
-from pygame.sprite import Sprite
 from pygame.surface import Surface
 
 
-class SpriteComponent(Sprite):
+class SpriteComponent:
 
     def __init__(self, position: Vector2, image: Surface):
 
