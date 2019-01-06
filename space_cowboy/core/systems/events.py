@@ -124,13 +124,14 @@ class EventSystem:
         :param subscriber: object that is unsubscribing.
         :param event_types: event type or list of types to unsubscribe to. If None, unsubscribes from every channel.
         """
+
         if event_types:
             try:
                 for type_ in event_types:
-                    del self.__channels[type_][subscriber]
+                    self.__channels[type_].pop(subscriber, None)
             except TypeError:
                 type_ = event_types
-                del self.__channels[type_][subscriber]
+                self.__channels[type_].pop(subscriber, None)
         else:
             for chn in self.__channels:
                 self.unsubscribe(subscriber, chn)
