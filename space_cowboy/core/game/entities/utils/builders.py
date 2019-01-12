@@ -6,13 +6,13 @@ from typing import Iterable
 
 from pygame.math import Vector2
 
-from ...systems.events import EventSystem
-from ...loaders.images import ImagesLoader
-from ..components.input import KeyboardInputComponent
-from ..components.model import ModelComponent
-from ..components.transform import TransformComponent
-from .asteroids import Asteroid
-from .ships import PlayerShip
+from ....systems.events import EventSystem
+from ....loaders.images import ImagesLoader
+from ...components.input import KeyboardInputComponent
+from ...components.model import ModelComponent
+from ...components.transform import TransformComponent
+from ..asteroids import Asteroid
+from ..ships import PlayerShip
 
 
 def build_asteroid(position: Vector2, direction: Vector2, speed: int, images_loader: ImagesLoader) -> Asteroid:
